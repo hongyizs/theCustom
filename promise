@@ -1,0 +1,20 @@
+class promise{
+  value = null
+  status = 'pending'
+  callbacks = []
+  constructor(fn){
+    fn(this.resolve.bind(this))
+  }
+  then(onFulfilled){
+    this.status == 'pending'?this.callbacks.push(onFulfilled):onFulfilled(this.value)
+    return this
+  }
+  resolve(value){
+    this.status = 'fulfilled';
+    this.value = value
+    setTimeout(()=>this.callbacks.map(callback=>callback(value)),0)
+  }
+}
+const getTimes = () => new promise(resolve=>setTimeout(()=>resolve(new Date()),2000))
+console.log(new Date())
+getTimes().then(e=>console.log(e))
